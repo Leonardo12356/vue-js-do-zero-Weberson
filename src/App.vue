@@ -1,39 +1,32 @@
 <template>
-  <div id= "app">
-    <!-- <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div> -->
-  <Menu></Menu>
+  <div id="app">
+    <Menu v-if="this.$router.currentRoute.name != 'Login'"></Menu> <!--Verificar pq o menu não esta sumindo-->
+    <router-view />
 
-  <router-view/>
-</div>
+  </div>
 </template>
 
 <script>
-  
-import Menu from '@/components/menu/Menu.vue';
+import Menu from "@/components/menu/Menu.vue";
 
 export default {
- 
-  components:{
-    Menu,
-   
-}
-}
+  components: {
+    Menu
+  },
+};
 </script>
   
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
-  :root{
-    --cor-primaria: #FF3D00;
-    --cor-secundaria: #FF6E40;
-  }
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+:root {
+  --cor-primaria: #ff3d00;
+  --cor-secundaria: #ff6e40;
+}
 
-body{
+body {
   margin: 0;
-  padding: 0; 
-  font-family: 'Quicksand', sans-serif;
+  padding: 0;
+  font-family: "Quicksand", sans-serif;
 }
 </style>
