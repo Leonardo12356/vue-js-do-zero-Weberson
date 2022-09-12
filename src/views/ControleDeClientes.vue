@@ -9,7 +9,7 @@ export default {
   name: 'ControleDeClientes',
   data(){
     return{
-      mensagem: 'Estou na tela Controle de clientes' // posso usar em qualquer lugar é como se fosse uma variável 
+      mensagem: 'Clientes' // posso usar em qualquer lugar é como se fosse uma variável 
     }
   }
 }

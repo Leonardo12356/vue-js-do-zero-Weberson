@@ -9,7 +9,7 @@ export default {
   name: 'Dashboard',
   data(){
     return{
-      mensagem: 'Estou na tela dashboard' // posso usar em qualquer lugar é como se fosse uma variável 
+      mensagem: 'Dashboard' // posso usar em qualquer lugar é como se fosse uma variável 
     }
   }
 }

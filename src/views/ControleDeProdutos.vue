@@ -9,7 +9,7 @@ export default {
   name: 'ControleDeProdutos',
   data(){
     return{
-      mensagem: 'Estou na tela Controle de produtos' // posso usar em qualquer lugar é como se fosse uma variável 
+      mensagem: 'Produtos' // posso usar em qualquer lugar é como se fosse uma variável 
     }
   }
 }

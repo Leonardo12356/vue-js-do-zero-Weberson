@@ -1,4 +1,4 @@
-// @ alias para a pasta src ouposso usar o padrão  "../"
+// @ alias para a pasta src ou posso usar o padrão  "../"
 import Login from '@/views/Login.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import ControleDeProdutos from '@/views/ControleDeProdutos.vue';
