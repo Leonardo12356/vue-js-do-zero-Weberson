@@ -1,17 +1,35 @@
 <template>
   <div id="app">
-    <Menu v-if="this.$router.currentRoute.name != 'Login'"></Menu> <!--Verificar pq o menu não esta sumindo-->
-    <router-view />
+    
 
+    <router-view />
   </div>
 </template>
 
 <script>
-import Menu from "@/components/menu/Menu.vue";
+import MenuComponent from "@/components/menu/MenuComponent.vue";
+import { useRoute } from "vue-router";
 
 export default {
+  data() {
+    return { isLogin: false};
+  },
+  mounted() {
+   this.loginPage();
+  console.log(this.isLogin)    
+  },
   components: {
-    Menu
+    MenuComponent: MenuComponent,
+  },
+  methods: {
+    loginPage() {
+      this.isLogin = this.$router.currentRoute._value.path == '/login';
+    },
+  },
+
+  setup() {
+    const router = useRoute();
+    return router;
   },
 };
 </script>
