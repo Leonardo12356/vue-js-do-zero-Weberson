@@ -1,5 +1,4 @@
 <template>
-  <MenuComponent />
   <div> <!--Dentro de uma template só pode ter um filho com tudo dentro dela, ex: div que foi minha tag principal-->
     <h1>{{ mensagem }}</h1> <!--posso chamar qualquer coisa dentro do data INTERPOLAÇÃO -->
   </div>
@@ -7,11 +6,11 @@
 
 
 <script>
-import MenuComponent from '@/components/menu/MenuComponent.vue'
+
 export default {
   name: 'Dashboard',
   components: {
-    MenuComponent
+    
   },
   data(){
     return{

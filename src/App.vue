@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    
+    <MenuComponent v-if="this.$route.name !== 'Login'" />
 
     <router-view />
   </div>
@@ -19,7 +19,7 @@ export default {
   console.log(this.isLogin)    
   },
   components: {
-    MenuComponent: MenuComponent,
+    MenuComponent
   },
   methods: {
     loginPage() {
