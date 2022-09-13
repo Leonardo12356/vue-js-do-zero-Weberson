@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Input from "@/components/input/Input.vue";
+import Input from "@/components/input/InputComponent.vue";
 import ButtonComponent from "@/components/button/ButtonComponent.vue";
 
 export default {

@@ -1,25 +1,96 @@
 <template>
-  <div> <!--Dentro de uma template só pode ter um filho com tudo dentro dela, ex: div que foi minha tag principal-->
-    <h1>{{ mensagem }}</h1> <!--posso chamar qualquer coisa dentro do data INTERPOLAÇÃO -->
+  <div class="container">
+    <!--Dentro de uma template só pode ter um filho com tudo dentro dela, ex: div que foi minha tag principal-->
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h2 class="titulo">Produtos</h2>
+        <hr />
+      </div>
+    </div>
+
+
+    <div class="row sub-container">
+      <div class="col-sm-2">
+        <ButtonComponent value="Adicionar"></ButtonComponent>
+      </div>
+    </div>
+
+      <div class="row">
+         <div class="col-sm-12">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nome</th>
+                  <th>Quantidade</th>
+                  <th>Valor</th>
+                  <th>Data de cadastro</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in produtos" :key="item.id">
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.nome }}</td>
+                  <td>{{ item.quantidadeEstoque }}</td>
+                  <td>{{ item.valor }}</td>
+                  <td>{{ item.dataCadastro }}</td> <!--Verificar conversão de filtro do vue js 2 pro 3-->
+                  <td>Editar / Excluir</td>
+
+                </tr>
+              </tbody>
+            </table>
+         </div>
+      </div>
+
   </div>
 </template>
 
 <script>
+import ButtonComponent from '@/components/button/ButtonComponent.vue';
+import produtoService from '@/services/produto-service';
+import Produto from '@/models/Produto';
+import conversorDeData from '@/utils/conversor-data';
+
+
 export default {
-  name: 'ControleDeProdutos',
-  data(){
-    return{
-      mensagem: 'Produtos' // posso usar em qualquer lugar é como se fosse uma variável 
+  name: "ControleDeProdutos",
+  components: {
+    ButtonComponent,
+  },
+  data() {
+    return {
+        produtos: []
+    };
+  },
+  computed:{
+    data(data){
+      return conversorDeData.aplicarMascaraDataHoraEmDataIso(data);
     }
+  },
+  methods:{
+    obeterTodosOsProdutos(){
+
+     produtoService.obterTodos()
+     .then(response => {
+      this.produtos = response.data.map(p => new Produto(p));
+     })
+     .catch(error => {
+      console.log(error)
+     })
+    }
+  },
+  mounted(){
+    this.obeterTodosOsProdutos();
   }
-}
+};
 </script>
 
 <!--CSS não fica preso à um componente somente com a palavra 'SCOPED'-->
 
-<style scoped> 
+<style scoped>
 h1 {
   color: red;
 }
-
 </style>
