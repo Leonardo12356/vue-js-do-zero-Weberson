@@ -4,10 +4,10 @@
 
 <script>
 export default {
-    name:'Button',
+    name:'ButtonComponent',
     props:{
         value: { type: String, require },
-        callback: {type: Function, deafault: () => {}}
+        callback: {type: Function, default: () => {}}
     }
 }
 </script>
@@ -19,7 +19,7 @@ export default {
         color: #fff;
         padding: 14px 20px;
         margin: 8px 0;
-        border: none;
+        border: none; 
         border-radius: 4px;
         cursor: pointer;
     }
