@@ -12,7 +12,7 @@
 
     <div class="row sub-container">
       <div class="col-sm-2">
-        <ButtonComponent value="Adicionar"></ButtonComponent>
+        <ButtonComponent :callback="adicionarProduto" value="Adicionar"></ButtonComponent>
       </div>
     </div>
 
@@ -34,9 +34,13 @@
                   <td>{{ item.id }}</td>
                   <td>{{ item.nome }}</td>
                   <td>{{ item.quantidadeEstoque }}</td>
-                  <td>{{ item.valor }}</td>
-                  <td>{{ item.dataCadastro }}</td> <!--Verificar conversão de filtro do vue js 2 pro 3-->
-                  <td>Editar / Excluir</td>
+                  <td>{{conversor(item.valor)}}</td>
+                  <td>{{conversorData(item.dataCadastro)}}</td>
+             
+                  <td>
+                    <i @click="editarProduto" class="fas fa-pencil-alt icones-tabela"></i>
+                    <i @click="excluirProduto" class="fas fa-trash-alt icones-tabela"></i>
+                  </td>
 
                 </tr>
               </tbody>
@@ -52,7 +56,7 @@ import ButtonComponent from '@/components/button/ButtonComponent.vue';
 import produtoService from '@/services/produto-service';
 import Produto from '@/models/Produto';
 import conversorDeData from '@/utils/conversor-data';
-
+import conversorMonetario from '../utils/conversor-monetario';
 
 export default {
   name: "ControleDeProdutos",
@@ -61,15 +65,32 @@ export default {
   },
   data() {
     return {
-        produtos: []
+        produtos: [],
+        
     };
   },
-  computed:{
-    data(data){
-      return conversorDeData.aplicarMascaraDataHoraEmDataIso(data);
-    }
-  },
+  
   methods:{
+    conversor(valor){
+    return conversorMonetario.aplicarMascaraParRealComPreFixo(valor)
+   },
+    
+    conversorData(data){
+      return conversorDeData.aplicarMascaraEmDataIso(data);
+    },
+
+    adicionarProduto(){
+      this.$router.push({ name:"NovoProduto" })
+    },
+
+    editarProduto(){
+      alert("Aqui vou editar produto")
+    },
+
+    excluirProduto(){
+      alert("Aqui vou excluir produto")
+    },
+
     obeterTodosOsProdutos(){
 
      produtoService.obterTodos()
@@ -90,7 +111,10 @@ export default {
 <!--CSS não fica preso à um componente somente com a palavra 'SCOPED'-->
 
 <style scoped>
-h1 {
-  color: red;
+.icones-tabela{
+  margin: 5px;
+  cursor: pointer;
+  color: var(--cor-primaria);
+
 }
 </style>
