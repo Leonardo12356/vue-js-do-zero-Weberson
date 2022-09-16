@@ -91,7 +91,11 @@
       <div class="col-sm-12">
         <div v-show="modoCadastro" class="form-check-inline">
           <label class="form-check-label">
-            <input v-model="continuarAdicionando" type="checkbox" class="form-check-input"  />
+            <input
+              v-model="continuarAdicionando"
+              type="checkbox"
+              class="form-check-input"
+            />
             Continuar adicionando
           </label>
         </div>
@@ -111,6 +115,7 @@
 import Produto from "../models/Produto";
 import produtoService from "@/services/produto-service";
 import conversorData from "@/utils/conversor-data";
+import Swal from "sweetalert2";
 
 export default {
   name: "Produto",
@@ -123,15 +128,13 @@ export default {
   },
   props: {
     id: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   mounted() {
-   if(!this.id) return;
-   this.modoCadastro = false;
-   this.obterPorId(this.id);
-
-    
+    if (!this.id) return;
+    this.modoCadastro = false;
+    this.obterPorId(this.id);
   },
 
   methods: {
@@ -149,55 +152,90 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          Swal.fire({
+            icon: "error",
+            title: "Não foi possível obter o produto pelo id " + id,
+            confirmButtonColor: "#FF3D00",
+          });
         });
     },
 
-    cadastrarProduto(){
-      if(!this.produto.modeloValidoParaCadastro()){
-        alert("O nome do produto é obrigatório para o cadastro.")
+    cadastrarProduto() {
+      if (!this.produto.modeloValidoParaCadastro()) {
+        Swal.fire({
+            icon: "warning",
+            title: "O nome do produto é obrigatório para o cadastro.",
+            confirmButtonColor: "#FF3D00",
+          });
         return;
       }
 
-      this.produto.dataCadastro = 
-            conversorData.aplicarMascaraISOEmFormatoAmericano(this.produto.dataCadastro);
+      this.produto.dataCadastro =
+        conversorData.aplicarMascaraISOEmFormatoAmericano(
+          this.produto.dataCadastro
+        );
 
-      produtoService.cadastrar(this.produto)
-      .then(() => {
-        alert("Produto cadastrado com sucesso!")
-        this.produto = new Produto();
+      produtoService
+        .cadastrar(this.produto)
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Produto cadastrado com sucesso",
+            confirmButtonColor: "#FF3D00",
+          });
+          this.produto = new Produto();
 
-        if(!this.continuarAdicionando){
-          this.$router.push({ name: "ControleDeProdutos" });
-        }
-
-      })
-      .catch(error =>{
-        console.log(error)
-      });
-    },
-
-    atualizarProduto(){
-      if(!this.produto.modeloValidoParaAtualizar()){
-        alert("O código e nome do produto são obrigatórios para o cadastro.")
-        return;
-      }
-
-      this.produto.dataCadastro = 
-            conversorData.aplicarMascaraISOEmFormatoAmericano(this.produto.dataCadastro);
-
-      produtoService.atualizar(this.produto)
-      .then(() => {
-        this.$router.push({ name: "ControleDeProdutos" });
-        alert("Produto atualizado com sucesso!")
-      })
-        .catch(error => {
+          if (!this.continuarAdicionando) {
+            this.$router.push({ name: "ControleDeProdutos" });
+          }
+        })
+        .catch((error) => {
           console.log(error);
+          Swal.fire({
+            icon: "error",
+            title: "Não foi possível cadastrar o produto.",
+            confirmButtonColor: "#FF3D00",
+          });
         });
-      
+    },
+
+    atualizarProduto() {
+      if (!this.produto.modeloValidoParaAtualizar()) {
+        Swal.fire({
+            icon: "warning",
+            title: "O código e nome do produto são obrigatórios para o cadastro.",
+            confirmButtonColor: "#FF3D00",
+          });
+        return;
+      }
+
+      this.produto.dataCadastro =
+        conversorData.aplicarMascaraISOEmFormatoAmericano(
+          this.produto.dataCadastro
+        );
+
+      produtoService
+        .atualizar(this.produto)
+        .then(() => {
+          this.$router.push({ name: "ControleDeProdutos" });
+          Swal.fire({
+            icon: "success",
+            title: "Produto atualizado com sucesso!",
+            confirmButtonColor: "#FF3D00",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          Swal.fire({
+            icon: "error",
+            title: "Não foi possível atualizar o produto.",
+            confirmButtonColor: "#FF3D00",
+          });
+        });
     },
 
     salvarProduto() {
-      (this.modoCadastro) ? this.cadastrarProduto() : this.atualizarProduto();
+      this.modoCadastro ? this.cadastrarProduto() : this.atualizarProduto();
     },
   },
 };

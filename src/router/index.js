@@ -3,6 +3,7 @@ import Login from '@/views/Login.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import ControleDeProdutos from '@/views/ControleDeProdutos.vue';
 import ControleDeClientes from '@/views/ControleDeClientes.vue';
+import ListaProdutoCards from '@/views/ListaProdutoCards.vue';
 import Produto from '@/views/Produto.vue';
 
 const rotas = [
@@ -48,6 +49,14 @@ const rotas = [
     name: 'EditarProduto',
     component: Produto,
     title: 'Editar produto',
+    props: true,
+    meta: { requiredAuth: true }
+  },
+  {
+    path: '/controle-de-produtos/lista-cards', 
+    name: 'ListaProdutoCards',
+    component: ListaProdutoCards,
+    title: 'Lista de produtos em cards',
     props: true,
     meta: { requiredAuth: true }
   },
