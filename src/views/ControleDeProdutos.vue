@@ -34,8 +34,8 @@
                   <td>{{ item.id }}</td>
                   <td>{{ item.nome }}</td>
                   <td>{{ item.quantidadeEstoque }}</td>
-                  <td>{{conversor(item.valor)}}</td>
-                  <td>{{conversorData(item.dataCadastro)}}</td>
+                  <td>{{item.valor}}</td>
+                  <td>{{item.dataCadastro}}</td>
              
                   <td>
                     <i @click="editarProduto(item)" class="fas fa-pencil-alt icones-tabela"></i>
@@ -55,8 +55,8 @@
 import ButtonComponent from '@/components/button/ButtonComponent.vue';
 import produtoService from '@/services/produto-service';
 import Produto from '@/models/Produto';
-import conversorDeData from '@/utils/conversor-data';
-import conversorMonetario from '../utils/conversor-monetario';
+
+
 
 export default {
   name: "ControleDeProdutos",
@@ -71,20 +71,15 @@ export default {
   },
   
   methods:{
-    conversor(valor){
-    return conversorMonetario.aplicarMascaraParRealComPreFixo(valor)
-   },
-    
-    conversorData(data){
-      return conversorDeData.aplicarMascaraEmDataIso(data);
-    },
+
 
     adicionarProduto(){
       this.$router.push({ name:"NovoProduto" })
     },
 
-    editarProduto(produto){
-      this.$router.push({ name:"EditarProduto", params: {id: produto.id} })
+    editarProduto(item){
+       this.$router.push({ name:'EditarProduto', params: {id: item.id } })
+     
       
       
     },
@@ -93,7 +88,7 @@ export default {
       alert("Aqui vou excluir produto")
     },
 
-    obeterTodosOsProdutos(){
+    obterTodosOsProdutos(){
 
      produtoService.obterTodos()
      .then(response => {
@@ -104,8 +99,8 @@ export default {
      })
     }
   },
-  mounted(){
-    this.obeterTodosOsProdutos();
+  created(){
+    this.obterTodosOsProdutos();
   }
 };
 </script>

@@ -44,10 +44,11 @@ const rotas = [
     meta: { requiredAuth: true }
   },
   {
-    path: '/controle-de-produtos/editar', // kebab case nome de rota escrito tudo minusculo separado por "-"
+    path: '/controle-de-produtos/editar/:id', 
     name: 'EditarProduto',
     component: Produto,
     title: 'Editar produto',
+    props: true,
     meta: { requiredAuth: true }
   },
 ];
