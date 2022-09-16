@@ -1,5 +1,4 @@
 import conversorData from "@/utils/conversor-data";
-import conversorMonetario from "@/utils/conversor-monetario";
 
 export default class Produto {
     constructor(obj){
@@ -7,9 +6,17 @@ export default class Produto {
         
         this.id = obj.id;
         this.nome = obj.nome;
-        this.valor = conversorMonetario.aplicarMascaraParReal( obj.valor || 0);
+        this.valor = obj.valor || 0;
         this.quantidadeEstoque = obj.quantidadeEstoque || 0;
-        this.dataCadastro = obj.dataCadastro && conversorData.aplicarMascaraEmDataIso(obj.dataCadastro);
+        this.dataCadastro = obj.dataCadastro && conversorData.aplicarMascaraEmFormatoAmericanoEmDataISO(obj.dataCadastro);
+        this.observacao = obj.observacao;
     }
 
+    modeloValidoParaCadastro(){
+        return !!this.nome;
+    }
+
+    modeloValidoParaAtualizar(){
+        return !! (this.id && this.nome)
+    }
 }

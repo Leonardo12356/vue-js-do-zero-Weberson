@@ -1,11 +1,11 @@
-function aplicarMascaraParReal(valor){
+function aplicarMascaraParaReal(valor){
     if(isNaN(valor)){
         return 0;
     }
     return Number(valor).toLocaleString('pt-BR', {minimumFractionDigits: 2 });
 }
 
-function aplicarMascaraParRealComPreFixo(valor){
+function aplicarMascaraParaRealComPreFixo(valor){
     if(isNaN(valor)){
         return 0;
     }
@@ -13,7 +13,7 @@ function aplicarMascaraParRealComPreFixo(valor){
 }
 
 export default {
-    aplicarMascaraParReal,
-    aplicarMascaraParRealComPreFixo
+    aplicarMascaraParaReal,
+    aplicarMascaraParaRealComPreFixo
 
 }

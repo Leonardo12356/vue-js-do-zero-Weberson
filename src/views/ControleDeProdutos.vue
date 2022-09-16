@@ -34,8 +34,8 @@
                   <td>{{ item.id }}</td>
                   <td>{{ item.nome }}</td>
                   <td>{{ item.quantidadeEstoque }}</td>
-                  <td>{{item.valor}}</td>
-                  <td>{{item.dataCadastro}}</td>
+                  <td>{{conversor(item.valor)}}</td>
+                  <td>{{conversorData(item.dataCadastro)}}</td>
              
                   <td>
                     <i @click="editarProduto(item)" class="fas fa-pencil-alt icones-tabela"></i>
@@ -55,7 +55,8 @@
 import ButtonComponent from '@/components/button/ButtonComponent.vue';
 import produtoService from '@/services/produto-service';
 import Produto from '@/models/Produto';
-
+import conversorDeData from '@/utils/conversor-data';
+import conversorMonetario from '../utils/conversor-monetario';
 
 
 export default {
@@ -72,6 +73,13 @@ export default {
   
   methods:{
 
+    conversorData(data){
+      return conversorDeData.aplicarMascaraEmDataIso(data);
+    },
+
+    conversor(valor){
+    return conversorMonetario.aplicarMascaraParaRealComPreFixo(valor)
+   },
 
     adicionarProduto(){
       this.$router.push({ name:"NovoProduto" })
@@ -80,12 +88,25 @@ export default {
     editarProduto(item){
        this.$router.push({ name:'EditarProduto', params: {id: item.id } })
      
-      
-      
     },
 
-    excluirProduto(){
-      alert("Aqui vou excluir produto")
+    excluirProduto(produto){
+     
+      if(confirm(`Deseja excluit o produto "${produto.id} - ${produto.nome}"`)){
+          
+        produtoService.deletar(produto.id)
+        .then(() => {
+          let indice = this.produtos.findIndex(p => p.id == produto.id);
+          this.produtos.splice(indice, 1);
+
+          setTimeout(() => {
+            alert("Produto excluido com sucesso!")
+          },500)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
     },
 
     obterTodosOsProdutos(){

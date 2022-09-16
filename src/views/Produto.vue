@@ -65,7 +65,7 @@
           <input
             id="data-cadastro"
             v-model="produto.dataCadastro"
-            :disabled="!modoCadastro"
+            type="date"
             class="form-control"
           />
         </div>
@@ -89,9 +89,9 @@
       </div>
 
       <div class="col-sm-12">
-        <div class="form-check-inline">
+        <div v-show="modoCadastro" class="form-check-inline">
           <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" value="" />
+            <input v-model="continuarAdicionando" type="checkbox" class="form-check-input"  />
             Continuar adicionando
           </label>
         </div>
@@ -110,6 +110,7 @@
 <script>
 import Produto from "../models/Produto";
 import produtoService from "@/services/produto-service";
+import conversorData from "@/utils/conversor-data";
 
 export default {
   name: "Produto",
@@ -117,6 +118,7 @@ export default {
     return {
       produto: new Produto(),
       modoCadastro: true,
+      continuarAdicionando: false,
     };
   },
   props: {
@@ -149,7 +151,54 @@ export default {
           console.log(error);
         });
     },
-    salvarProduto() {},
+
+    cadastrarProduto(){
+      if(!this.produto.modeloValidoParaCadastro()){
+        alert("O nome do produto é obrigatório para o cadastro.")
+        return;
+      }
+
+      this.produto.dataCadastro = 
+            conversorData.aplicarMascaraISOEmFormatoAmericano(this.produto.dataCadastro);
+
+      produtoService.cadastrar(this.produto)
+      .then(() => {
+        alert("Produto cadastrado com sucesso!")
+        this.produto = new Produto();
+
+        if(!this.continuarAdicionando){
+          this.$router.push({ name: "ControleDeProdutos" });
+        }
+
+      })
+      .catch(error =>{
+        console.log(error)
+      });
+    },
+
+    atualizarProduto(){
+      if(!this.produto.modeloValidoParaAtualizar()){
+        alert("O código e nome do produto são obrigatórios para o cadastro.")
+        return;
+      }
+
+      this.produto.dataCadastro = 
+            conversorData.aplicarMascaraISOEmFormatoAmericano(this.produto.dataCadastro);
+
+      produtoService.atualizar(this.produto)
+      .then(() => {
+        this.$router.push({ name: "ControleDeProdutos" });
+        alert("Produto atualizado com sucesso!")
+      })
+        .catch(error => {
+          console.log(error);
+        });
+      
+    },
+
+    salvarProduto() {
+      (this.modoCadastro) ? this.cadastrarProduto() : this.atualizarProduto();
+    },
   },
 };
 </script>
