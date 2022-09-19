@@ -37,8 +37,8 @@ export default {
 <style >
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0. 0.3);
-    max-width: 300px;
-    margin: auto;
+    max-width: 270px;
+    margin: 5px;
     margin-bottom: 15px;
     text-align: center;
     padding: 10px;
