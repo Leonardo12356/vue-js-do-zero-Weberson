@@ -16,6 +16,9 @@
           value="Adicionar"
         ></ButtonComponent>
       </div>
+      <div class="col-sm-10">
+        <a @click="verProdutosEmCards" href="" class="float-right ver-em-cards"> Ver em cards</a>
+      </div>
     </div>
 
     <div class="row">
@@ -59,10 +62,6 @@
 
 <script>
 import ButtonComponent from "@/components/button/ButtonComponent.vue";
-import produtoService from "@/services/produto-service";
-import Produto from "@/models/Produto";
-import conversorDeData from "@/utils/conversor-data";
-import conversorMonetario from "../utils/conversor-monetario";
 import Swal from "sweetalert2";
 
 export default {
@@ -77,6 +76,10 @@ export default {
   },
 
   methods: {
+    verProdutosEmCards() {
+        this.$router.push({ name: "ListaProdutoCards" });
+    },
+
     conversorData(data) {
       return conversorDeData.aplicarMascaraEmDataIso(data);
     },
@@ -153,9 +156,14 @@ export default {
 <!--CSS não fica preso à um componente somente com a palavra 'SCOPED'-->
 
 <style scoped>
-.icones-tabela {
+.icones-tabela,
+.ver-em-cards {
   margin: 5px;
   cursor: pointer;
   color: var(--cor-primaria);
+}
+
+.ver-em-cards{
+  margin-top: 25px;
 }
 </style>

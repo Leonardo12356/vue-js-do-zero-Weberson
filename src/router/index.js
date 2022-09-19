@@ -57,7 +57,6 @@ const rotas = [
     name: 'ListaProdutoCards',
     component: ListaProdutoCards,
     title: 'Lista de produtos em cards',
-    props: true,
     meta: { requiredAuth: true }
   },
 ];
