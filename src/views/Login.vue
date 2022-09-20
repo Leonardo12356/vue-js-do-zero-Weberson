@@ -2,31 +2,60 @@
   <div class="box-login">
     <div class="logo">
       <h1>Login</h1>
+   
     </div>
-    <Input label="E-mail" placeHolder="exemplo@gmail.com"></Input>
-    <Input label="Senha" placeHolder="123456" type="password"></Input>
-
-    <ButtonComponent value="Entrar" :callback="login" />
+    <InputComponent label="E-mail" placeHolder="exemplo@gmail.com" v-model="usuario.email"></InputComponent>
+    <InputComponent label="Senha" placeHolder="123456" type="password" v-model="usuario.senha"></InputComponent>
+  
+    <ButtonComponent value="Entrar" :callback="() => login()" />
   </div>
 </template>
 
 <script>
-import Input from "@/components/input/InputComponent.vue";
+import InputComponent from "@/components/input/InputComponent.vue";
 import ButtonComponent from "@/components/button/ButtonComponent.vue";
+import Usuario from '@/models/Usuario';
+import usuarioService from '@/services/usuario-service'
+import Swal  from 'sweetalert2';
+import utilsStorage from '@/utils/storage'
 
 export default {
   name: "Login",
   components: {
-    Input,
+    InputComponent,
     ButtonComponent,
   },
   data() {
-    return {};
+    return {
+      teste: '',
+     usuario: new Usuario()
+    };
   },
   methods: {
     login() {
-      // Aqui criar uma lógica para acessar o sistema
-      this.$router.push({ name: "Dashboard" });
+
+      if(!this.usuario.modeloValidoLogin()){
+        Swal.fire({
+                icon: "warning",
+                title: "Email e senha são obrigatórios.",
+                confirmButtonColor: "#FF3D00",
+            })
+        return;
+      }
+
+      usuarioService
+      .login(this.usuario.email, this.usuario.senha)
+      .then(response => {
+        this.usuario = new Usuario(response.data.usuario)
+   
+        utilsStorage.salvarUsuarioNaStorage(this.usuario)
+        utilsStorage.salvarTokenNaStorage(response.data.token)
+
+        this.$router.push({ name: "ControleDeProdutos" });
+      })
+      .catch(error => {
+        console.log(error);
+      })
     },
   },
 };
@@ -40,6 +69,7 @@ export default {
   margin-top: 70px;
   padding: 30px;
 }
+
 .logo {
   text-align: center;
   color: var(--cor-primaria);

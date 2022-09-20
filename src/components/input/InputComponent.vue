@@ -1,21 +1,26 @@
 <template>
   <div>
     <label for="">{{ label }}</label> <br />
-    <input :placeholder="placeHolder" :type="type" />
+    <input :type="type" :placeholder="placeholder" :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)" />
   </div>
 </template>
 
 <script>
 export default {
+  emits: ["update:modelValue"], props: { labelInput: { type: String }, placeholder: { type: String, default: "Digite aqui!" }, type: { type: String, default: "text" }, modelValue: { type: String, default: "" }, },
   name: "Input",
-  props:{
-    label:{ type: String, require },
-    placeHolder: { type: String },
-    type:{ type: String, deafult: 'text' }
+  model: {
+    prop: "value",
+    event: 'onChange',
   },
+
   data() {
-    return {};
+    return {
+      valor: this.value
+    };
   },
+
 };
 </script>
 
@@ -24,7 +29,7 @@ input {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0px;
-  display:inline-block;
+  display: inline-block;
   border: 1px solid #ddd;
   outline: none;
   border-radius: 4px;
